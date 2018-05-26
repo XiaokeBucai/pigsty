@@ -23,7 +23,7 @@ public class UserController {
         User user = new User();
         user.setUsername("Zhangsan");
         userService.insert(user);
-        return "aaa";
+        return "/user/main";
     }
 
 }

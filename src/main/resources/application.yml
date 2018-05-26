@@ -21,6 +21,10 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
+  mvc:
+    view:
+      prefix: /WEB-INF/views/jsp/
+      suffix: .jsp
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com._220a220e.entity
