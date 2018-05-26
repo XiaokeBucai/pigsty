@@ -6,7 +6,7 @@
 	<groupId>com._220a220e</groupId>
 	<artifactId>pigsty</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>pigsty</name>
 	<description>Project for 220a220e</description>
