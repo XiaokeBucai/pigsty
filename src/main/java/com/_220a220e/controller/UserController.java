@@ -4,6 +4,7 @@ import com._220a220e.entity.User;
 import com._220a220e.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,10 +20,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/")
-    public String main() {
-        User user = new User();
-        user.setUsername("Zhangsan");
-        userService.insert(user);
+    public String main(Model model) {
+        User user = userService.findByUsername("admin");
+        model.addAttribute("vo", user);
         return "/user/main";
     }
 

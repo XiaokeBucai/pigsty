@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com._220a220e.mapper.PermissionMapper">
+    <resultMap id="BaseResultMap" type="com._220a220e.entity.Permission">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="method" jdbcType="VARCHAR" property="method" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="status" jdbcType="CHAR" property="status" />
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        url,
+        method,
+        description,
+        status,
+        create_date,
+        update_date
+    </sql>
+
+    <insert id="insert" parameterType="com._220a220e.entity.Permission">
+        insert into sys_permission (
+          <include refid="Base_Column_List" />
+        )
+        values (
+          #{id,jdbcType=INTEGER},
+          #{name,jdbcType=VARCHAR},
+          #{url,jdbcType=VARCHAR},
+          #{method,jdbcType=VARCHAR},
+          #{description,jdbcType=VARCHAR},
+          #{status,jdbcType=CHAR},
+          #{createDate,jdbcType=TIMESTAMP},
+          #{updateDate,jdbcType=TIMESTAMP})
+    </insert>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_permission
+    </select>
+</mapper>

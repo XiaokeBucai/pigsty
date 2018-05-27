@@ -1,6 +1,6 @@
 package com._220a220e.mapper;
 
-import com._220a220e.entity.User;
+import com._220a220e.entity.Role;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -8,44 +8,43 @@ import java.util.List;
 
 /**
  * @author Garrosh
- * @date 2018/5/25
+ * @date 2018/5/26
  */
 @Repository
-public interface UserMapper {
+public interface RoleMapper {
     /**
-     * 根据ID删除数据
+     * 删除角色信息
      * @param id
      * @return
      */
     int deleteByPrimaryKey(@Param("id") Integer id);
     /**
-     * 插入数据
+     * 插入角色信息
      * @param record
      * @return
      */
-    int insert(User record);
+    int insert(Role record);
     /**
-     * 根据ID查找数据
+     * 根据ID查询角色
      * @param id
      * @return
      */
-    User selectByPrimaryKey(@Param("id") Integer id);
+    Role selectByPrimaryKey(@Param("id") Integer id);
     /**
      * 查询全部
      * @return
      */
-    List<User> selectAll();
+    List<Role> selectAll();
     /**
-     * 更新数据
+     * 更新角色信息
      * @param record
      * @return
      */
-    int updateByPrimaryKey(User record);
+    int updateByPrimaryKey(Role record);
     /**
-     * 根据用户名查找数据
-     * @param username
-     * @param status
+     * 查询用户的角色
+     * @param userId
      * @return
      */
-    User selectByUsername(@Param("username") String username, @Param("status") String status);
+    List<Role> selectByUserId(@Param("userId") Integer userId);
 }

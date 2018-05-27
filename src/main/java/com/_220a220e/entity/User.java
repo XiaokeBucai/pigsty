@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Garrosh
@@ -27,6 +28,8 @@ public class User implements Serializable {
     private String status;
     private Date createDate;
     private Date updateDate;
+
+    private List<Role> roles;
 
     public Integer getId() {
         return id;
@@ -98,5 +101,13 @@ public class User implements Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
