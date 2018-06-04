@@ -5,7 +5,6 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import javax.servlet.Filter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -23,6 +21,7 @@ import java.util.Map;
  */
 @Configuration
 public class ShiroConfiguration {
+
     /**
      * LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
      * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
@@ -55,6 +54,7 @@ public class ShiroConfiguration {
     @DependsOn("lifecycleBeanPostProcessor")
     public ShiroRealm shiroRealm() {
         ShiroRealm shiroRealm = new ShiroRealm();
+        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return shiroRealm;
     }
 
@@ -64,6 +64,7 @@ public class ShiroConfiguration {
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        // 设置realm
         securityManager.setRealm(shiroRealm());
         return securityManager;
     }
@@ -77,21 +78,31 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
 
-        Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
-        LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl("/passport/login");
-        shiroFilterFactoryBean.setFilters(filters);
+        // 拦截器
+        Map<String, String> filterChainDefinitionManager = new LinkedHashMap<>();
 
-        Map<String, String> filterChainDefinitionManager = new LinkedHashMap<String, String>();
+        // 配置不会被拦截的链接 顺序判断
+        filterChainDefinitionManager.put("/static/**", "anon");
+        // 配置退出过滤器，其中具体的退出代码由shiro实现
         filterChainDefinitionManager.put("/passport/logout", "logout");
-//        filterChainDefinitionManager.put("/user/**", "authc,roles[ROLE_USER]");
-        filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
-//        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
-        filterChainDefinitionManager.put("/**", "anon");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
 
-        shiroFilterFactoryBean.setSuccessUrl("/");
+        // 具有角色“ADMIN”的用户有权限访问
+        filterChainDefinitionManager.put("/user/**", "authc,roles[ADMIN]");
+        // 具有权限“user:edit”的用户有权限访问
+        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");
+
+        // 过滤链定义，从上向下顺序执行，一般将/**放在最为下边
+        // authc:所有url都必须认证通过才可以访问; anon:所有url都可以匿名访问
+        filterChainDefinitionManager.put("/**", "authc");
+
+        // 如果不设置默认会寻找Web工程根目录下的“/login.jsp”页面
+        shiroFilterFactoryBean.setLoginUrl("/passport/login");
+        // 登录成功后跳转的链接
+        shiroFilterFactoryBean.setSuccessUrl("/user/");
+        // 未授权界面
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
         return shiroFilterFactoryBean;
     }
 

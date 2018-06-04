@@ -3,6 +3,7 @@ package com._220a220e.service.impl;
 import com._220a220e.entity.User;
 import com._220a220e.mapper.UserMapper;
 import com._220a220e.service.UserService;
+import com._220a220e.util.PasswordHelper;
 import com._220a220e.util.StatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PasswordHelper passwordHelper;
 
     @Override
     public void insert(User user) {
@@ -44,4 +48,11 @@ public class UserServiceImpl implements UserService {
         user.setStatus(StatusEnum.DELETED.toString());
         update(user);
     }
+
+    @Override
+    public void saveRegisterUser(User user) {
+        passwordHelper.encryptPassword(user);
+        this.insert(user);
+    }
+
 }

@@ -13,6 +13,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -60,11 +61,20 @@ public class ShiroRealm extends AuthorizingRealm {
         String username = token.getUsername();
 
         User user = userService.findByUsername(username);
-        if (user != null) {
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("user", user);
-            return new SimpleAuthenticationInfo(username, user.getPassword(), getName());
+
+        if(user == null) {
+            // 没找到帐号
+            throw new UnknownAccountException();
         }
-        return null;
+
+        Session session = SecurityUtils.getSubject().getSession();
+        session.setAttribute("user", user);
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                user.getUsername(),
+                user.getPassword(),
+                ByteSource.Util.bytes(user.getCredentialsSalt()),
+                getName()
+        );
+        return authenticationInfo;
     }
 }

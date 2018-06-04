@@ -3,6 +3,7 @@
 <mapper namespace="com._220a220e.mapper.RoleMapper">
     <resultMap id="BaseResultMap" type="com._220a220e.entity.Role">
         <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="role" jdbcType="VARCHAR" property="role" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="level" jdbcType="INTEGER" property="level" />
         <result column="description" jdbcType="VARCHAR" property="description" />
@@ -13,6 +14,7 @@
 
     <sql id="Base_Column_List">
         id,
+        role,
         name,
         level,
         description,
@@ -31,6 +33,7 @@
         )
         values (
           #{id,jdbcType=INTEGER},
+          #{role,jdbcType=VARCHAR},
           #{name,jdbcType=VARCHAR},
           #{level,jdbcType=INTEGER},
           #{description,jdbcType=VARCHAR},
@@ -42,10 +45,13 @@
     <update id="updateByPrimaryKey" parameterType="com._220a220e.entity.Role">
         update sys_role
         set
+        <if test="role != null">
+            role = #{role,jdbcType=VARCHAR},
+        </if>
         <if test="name != null">
           name = #{name,jdbcType=VARCHAR},
         </if>
-        <if test="name != null">
+        <if test="level != null">
           level = #{level,jdbcType=INTEGER},
         </if>
         <if test="description != null">

@@ -5,6 +5,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
@@ -17,6 +18,7 @@
     id,
     username,
     password,
+    salt,
     nickname,
     phone,
     email,
@@ -36,6 +38,7 @@
       #{id,jdbcType=INTEGER},
       #{username,jdbcType=VARCHAR},
       #{password,jdbcType=VARCHAR},
+      #{salt,jdbcType=VARCHAR},
       #{nickname,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR},
@@ -52,6 +55,9 @@
     </if>
     <if test="password != null">
       password = #{password,jdbcType=VARCHAR},
+    </if>
+    <if test="salt != null">
+      salt = #{salt,jdbcType=VARCHAR},
     </if>
     <if test="nickname != null">
       nickname = #{nickname,jdbcType=VARCHAR},

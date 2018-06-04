@@ -22,6 +22,7 @@ public class User implements Serializable {
     private Integer id;
     private String username;
     private String password;
+    private String salt;
     private String nickname;
     private String phone;
     private String email;
@@ -30,6 +31,10 @@ public class User implements Serializable {
     private Date updateDate;
 
     private List<Role> roles;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
     public Integer getId() {
         return id;
@@ -53,6 +58,14 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getNickname() {
@@ -109,5 +122,13 @@ public class User implements Serializable {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * 证书凭证
+     * @return
+     */
+    public String getCredentialsSalt() {
+        return username + salt;
     }
 }

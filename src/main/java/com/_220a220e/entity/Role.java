@@ -9,17 +9,12 @@ import java.util.Date;
  */
 public class Role implements Serializable {
     private Integer id;
-
+    private String role;
     private String name;
-
     private Integer level;
-
     private String description;
-
     private String status;
-
     private Date createDate;
-
     private Date updateDate;
 
     public Integer getId() {
@@ -30,12 +25,20 @@ public class Role implements Serializable {
         this.id = id;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Integer getLevel() {
@@ -51,7 +54,7 @@ public class Role implements Serializable {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
     public String getStatus() {
@@ -59,7 +62,7 @@ public class Role implements Serializable {
     }
 
     public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+        this.status = status;
     }
 
     public Date getCreateDate() {

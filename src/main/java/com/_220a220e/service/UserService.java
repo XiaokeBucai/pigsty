@@ -28,4 +28,9 @@ public interface UserService {
      * @return
      */
     User findByUsername(String username);
+    /**
+     * 注册用户
+     * @param user
+     */
+    void saveRegisterUser(User user);
 }
