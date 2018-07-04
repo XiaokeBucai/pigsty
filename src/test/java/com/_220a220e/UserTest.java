@@ -20,15 +20,12 @@ public class UserTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private PasswordHelper passwordHelper;
-
     @Test
     public void test() {
         User user = new User();
         user.setUsername("admin");
         user.setPassword("123456");
-        passwordHelper.encryptPassword(user);
+        PasswordHelper.encryptPassword(user);
 
         userService.insert(user);
     }

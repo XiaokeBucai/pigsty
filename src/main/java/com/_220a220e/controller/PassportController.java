@@ -23,7 +23,7 @@ public class PassportController {
 
     @GetMapping("/login")
     public String login() {
-        return "/login/login";
+        return "/login/signin";
     }
 
     @PostMapping("/login")

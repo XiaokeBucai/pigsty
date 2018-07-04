@@ -20,9 +20,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private PasswordHelper passwordHelper;
-
     @Override
     public void insert(User user) {
         user.setStatus(StatusEnum.ACTIVE.toString());
@@ -51,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveRegisterUser(User user) {
-        passwordHelper.encryptPassword(user);
+        PasswordHelper.encryptPassword(user);
         this.insert(user);
     }
 

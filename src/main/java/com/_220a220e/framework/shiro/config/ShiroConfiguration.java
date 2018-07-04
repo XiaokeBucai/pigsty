@@ -83,6 +83,7 @@ public class ShiroConfiguration {
 
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionManager.put("/static/**", "anon");
+        filterChainDefinitionManager.put("/resources/**", "anon");
         // 配置退出过滤器，其中具体的退出代码由shiro实现
         filterChainDefinitionManager.put("/passport/logout", "logout");
 
